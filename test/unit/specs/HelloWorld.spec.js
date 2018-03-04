@@ -1,11 +1,12 @@
-import Vue from 'vue'
-import HelloWorld from '@/components/HelloWorld'
+import Vue from "vue";
+import Header from "@/components/Header/Header.vue";
 
-describe('HelloWorld.vue', () => {
-  it('should render correct contents', () => {
-    const Constructor = Vue.extend(HelloWorld)
-    const vm = new Constructor().$mount()
-    expect(vm.$el.querySelector('.hello h1').textContent)
-    .toEqual('Welcome to Your Vue.js App')
-  })
-})
+describe("Header.vue", () => {
+  it("should render correct contents", () => {
+    const Constructor = Vue.extend(Header);
+    const vm = new Constructor().$mount();
+    expect(
+      vm.$el.querySelectorAll(".hidden-sm-and-down button").length
+    ).toEqual(4);
+  });
+});
