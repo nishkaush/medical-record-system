@@ -2,11 +2,34 @@
 <v-container>
   <v-layout>
     <v-flex class="text-xs-center">
-      <h1>Main App starts here, All About Patients</h1>
-      <v-btn>Search</v-btn>
-      <v-btn>Add New Patient</v-btn>
-      <v-btn to="/">Go Back To Home</v-btn>
+      <h1>Our Patients</h1>
+      <v-tabs fixed-tabs>
+        <v-tab href="#searchPatients">Search Patients</v-tab>
+        <v-tab href="#addNewPatient">Add New Patient</v-tab>
+        <v-tab-item id="searchPatients">
+          <search-patients-content></search-patients-content>
+        </v-tab-item>
+        <v-tab-item id="addNewPatient">
+          <add-new-patient></add-new-patient>
+        </v-tab-item>
+      </v-tabs>
     </v-flex>
   </v-layout>
 </v-container>
 </template>
+
+<script>
+import SearchPatients from "./SearchPatients.vue";
+import AddNewPatient from "./AddNewPatient.vue";
+export default {
+  data() {
+    return {
+      model: true
+    };
+  },
+  components: {
+    "search-patients-content": SearchPatients,
+    "add-new-patient": AddNewPatient
+  }
+};
+</script>
