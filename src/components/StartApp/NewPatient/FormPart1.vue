@@ -63,7 +63,7 @@
     </v-flex>
     <v-btn @click="clear">Reset Part 1</v-btn>
     <v-spacer></v-spacer>
-    <v-btn>Next</v-btn>
+    <v-btn @click="submit">Next</v-btn>
   </v-layout>
 </v-form>
 
@@ -109,6 +109,9 @@ export default {
   methods: {
     clear() {
       this.$refs.newPatientForm.reset();
+    },
+    submit() {
+      console.log("all good");
     }
   }
 };
