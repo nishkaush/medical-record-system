@@ -20,7 +20,7 @@
 
 <script>
 import SearchPatients from "./SearchPatients.vue";
-import AddNewPatient from "./AddNewPatient.vue";
+import AddNewPatient from "./NewPatient/AddNewPatient.vue";
 export default {
   data() {
     return {
