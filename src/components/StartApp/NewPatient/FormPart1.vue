@@ -1,69 +1,66 @@
 <template>
 <v-form class="pt-4" ref="newPatientForm">
   <v-layout row wrap>
-    <v-flex v-for="item in nameInfo" xs12 md4 justify-center :key="item.label" class="pl-5 pr-5">
-      <v-text-field :label="item.label" v-model="item.modelProp"></v-text-field>
+    <v-flex v-for="item in nameInfo" xs12 sm4 justify-center :key="item.label" class="px-4">
+      <v-text-field :label="item.label" v-model="patientData[item.name]"></v-text-field>
     </v-flex>
-    <v-flex xs12 sm4 class="pl-5 pr-5">
-      <v-text-field name="phone" label="Phone Number" v-model="phone"></v-text-field>
+    <v-flex xs12 sm4 class="px-4">
+      <v-text-field name="phone" label="Phone Number" v-model="patientData.phone"></v-text-field>
     </v-flex>
 
-    <v-flex xs12 sm4 class="pl-5 pr-5">
+    <v-flex xs12 sm4 class="px-4">
       <v-menu
         ref="menu"
         :close-on-content-click="false"
         v-model="menu"
-        offset-y
         full-width
-        :nudge-right="40"
         min-width="290px"
-        :return-value.sync="date"
+        :return-value.sync="patientData.dob"
       >
         <v-text-field
           slot="activator"
           label="Date of Birth"
-          v-model="date"
+          v-model="patientData.dob"
           readonly
         ></v-text-field>
-        <v-date-picker v-model="date" no-title scrollable>
+        <v-date-picker v-model="patientData.dob" no-title scrollable>
           <v-spacer></v-spacer>
           <v-btn flat color="primary" @click="menu = false">Cancel</v-btn>
-          <v-btn flat color="primary" @click="$refs.menu.save(date)">OK</v-btn>
+          <v-btn flat color="primary" @click="$refs.menu.save(patientData.dob)">OK</v-btn>
         </v-date-picker>
       </v-menu>
     </v-flex>
 
-    <v-flex xs12 sm4 class="pl-5 pr-5">
-      <v-text-field name="email" label="Email Address" v-model="email"></v-text-field>
+    <v-flex xs12 sm4 class="px-4">
+      <v-text-field name="email" label="Email Address" v-model="patientData.email"></v-text-field>
     </v-flex>
-    <v-flex xs12 md5 class="pl-5 pr-5">
-      <v-text-field name="address" label="Street Address" v-model="address"></v-text-field>
+    <v-flex xs12 sm8 md4 class="px-4">
+      <v-text-field name="streetAddress" label="Street Address" v-model="patientData.streetAddress"></v-text-field>
     </v-flex>
-    <v-flex xs12 md2 class="pl-5 pr-5">
-      <v-text-field name="address" label="City" v-model="address"></v-text-field>
+    <v-flex xs12 sm4 md2 class="px-4">
+      <v-text-field name="city" label="City" v-model="patientData.city"></v-text-field>
     </v-flex>
-    <v-flex xs12 md2 class="pl-5 pr-5">
-      <v-text-field name="address" label="State" v-model="address"></v-text-field>
+    <v-flex xs12 sm4 md2 class="px-4">
+      <v-text-field name="state" label="State" v-model="patientData.state"></v-text-field>
     </v-flex>
-    <v-flex xs12 md1 class="pl-5 pr-5">
-      <v-text-field name="address" label="Postcode" v-model="address"></v-text-field>
+    <v-flex xs12 sm4 md2 class="px-4">
+      <v-text-field name="country" label="Country" v-model="patientData.country"></v-text-field>
     </v-flex>
-    <v-flex xs12 md1 class="ml-5">
-      <v-text-field name="address" label="Country" v-model="address"></v-text-field>
+    <v-flex xs12 sm4 md2 class="px-4">
+      <v-text-field name="postcode" label="Postcode" v-model="patientData.postcode"></v-text-field>
     </v-flex>
-    <v-flex xs12 md6 class="pl-5 pr-5">
-      <v-text-field name="photoID" label="Photo ID Details" v-model="photoID"></v-text-field>
+    <v-flex xs12 md5 class="px-4">
+      <v-text-field name="photoID" label="Photo ID Details" v-model="patientData.photoID"></v-text-field>
     </v-flex>
-
-    <v-flex xs12 md3 class="pl-5 pr-5">
-      <v-select :items="genderOptions" label="Gender" v-model="gender"></v-select>
+    <v-flex xs12 sm6 md3 class="px-4">
+      <v-select :items="genderOptions" label="Gender" v-model="patientData.gender"></v-select>
     </v-flex>
-    <v-flex xs12 md3 class="pl-5 pr-5">
-      <v-select :items="patientTypeArr" label="Patient Type" v-model="patientType"></v-select>
+    <v-flex xs12 sm6 md4 class="px-4">
+      <v-select :items="patientTypeArr" label="Patient Type" v-model="patientData.patientType"></v-select>
     </v-flex>
-    <v-btn @click="clear">Reset Part 1</v-btn>
+    <v-btn @click="clear">Reset</v-btn>
     <v-spacer></v-spacer>
-    <v-btn @click="submit">Next</v-btn>
+    <v-btn @click="submit">Submit</v-btn>
   </v-layout>
 </v-form>
 
@@ -73,24 +70,36 @@
 export default {
   data() {
     return {
-      firstName: "",
-      middleName: "",
-      lastName: "",
-      phone: "",
-      email: "",
-      address: "",
-      gender: "",
-      dob: "",
-      patientType: "",
-      photoID: "",
+      patientData: {
+        firstName: "",
+        middleName: "",
+        lastName: "",
+        phone: "",
+        email: "",
+        streetAddress: "",
+        city: "",
+        state: "",
+        postcode: "",
+        country: "",
+        gender: "",
+        dob: "",
+        patientType: "",
+        photoID: "",
+        createdAt: Date.now()
+      },
       nameInfo: [
-        { label: "First Name", name: "firstName", modelProp: this.firstName },
+        {
+          label: "First Name",
+          name: "firstName"
+        },
         {
           label: "Middle Name",
-          name: "middleName",
-          modelProp: this.middleName
+          name: "middleName"
         },
-        { label: "Last Name", name: "lastName", modelProp: this.lastName }
+        {
+          label: "Last Name",
+          name: "lastName"
+        }
       ],
       genderOptions: [{ text: "Male" }, { text: "Female" }, { text: "Other" }],
       patientTypeArr: [
@@ -111,7 +120,7 @@ export default {
       this.$refs.newPatientForm.reset();
     },
     submit() {
-      console.log("all good");
+      console.log(this.patientData);
     }
   }
 };
