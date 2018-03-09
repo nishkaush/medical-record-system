@@ -2,7 +2,7 @@
   <v-card>
     <v-layout justify-center>
       <v-flex xs12 md8>
-        <v-form class="pt-4 text-xs-center" ref="searchMedForm">
+        <v-form class="pt-4 px-4 text-xs-center" ref="searchMedForm">
           <v-select 
             :items="medicineQuery" 
             label="Search By" 
