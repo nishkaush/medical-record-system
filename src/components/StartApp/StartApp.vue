@@ -1,5 +1,5 @@
 <template>
-<v-container>
+<v-container class="mt-3">
   <v-layout>
     <v-flex xs12 class="text-xs-center">
       <h1>Our Patients</h1>
