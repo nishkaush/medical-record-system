@@ -11,23 +11,22 @@
             v-model="$data[item.name]" 
             :label="item.label"
             :type="item.type"
-            v-if="textFieldToShow(item.label)"
+            v-if="textFieldToShow(item.name)"
             required
             :rules="[rules.required]"
           >
           </v-text-field>
-          <v-text-field label="Full Name" name="fullName" v-model="fullName" v-if="selectedQuery.text==='Full Name & Phone'" required :rules="[rules.required]"></v-text-field>
-          <v-text-field label="Phone Number" name="phone" v-model="phone" v-if="selectedQuery.text==='Full Name & Phone'" required :rules="[rules.required]"></v-text-field>
         </v-form>
 
       </v-flex>
     </v-layout>
-    <v-btn large @click="submitSearch" v-show="selectedQuery.text">Search</v-btn>
+    <v-btn large @click="submitSearch" v-show="selectedQuery">Search</v-btn>
   </v-card>
 </template>
 
 
 <script>
+import axios from "axios";
 export default {
   data() {
     return {
@@ -35,19 +34,12 @@ export default {
       lastName: "",
       fullName: "",
       phone: "",
-      patientId: "",
-      selectedQuery: {},
+      patient_id: "",
+      selectedQuery: "",
       rules: {
         required: v => !!v || `This field is required`
       },
-      queryType: [
-        { text: "First Name" },
-        { text: "Last Name" },
-        { text: "Full Name" },
-        { text: "Phone Number" },
-        { text: "Full Name & Phone" },
-        { text: "Patient Id" }
-      ],
+      queryType: ["firstName", "lastName", "fullName", "phone", "patient_id"],
       textFields: [
         {
           label: "First Name",
@@ -71,7 +63,7 @@ export default {
         },
         {
           label: "Patient Id",
-          name: "patientId",
+          name: "patient_id",
           type: "text"
         }
       ]
@@ -80,11 +72,23 @@ export default {
   methods: {
     submitSearch() {
       if (this.$refs.searchPatientForm.validate()) {
-        console.log("Send axios request from here");
+        let vm = this;
+        let selectedValue = this[vm.selectedQuery];
+
+        axios
+          .get(
+            `http://localhost:3000/patient/search?queryName=${
+              vm.selectedQuery
+            }&value=${selectedValue}`
+          )
+          .then(res => {
+            console.log(res.data);
+          })
+          .catch(err => console.log(err));
       }
     },
     textFieldToShow(fieldLabel) {
-      return this.selectedQuery.text === fieldLabel ? true : false;
+      return this.selectedQuery === fieldLabel ? true : false;
     }
   }
 };
