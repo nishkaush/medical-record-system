@@ -27,7 +27,7 @@
             :rules="[rules.required]"
           >
           </v-select>
-          <v-btn class="primary" v-if="selectedQuery.text" @click="submitForm">Search</v-btn>
+          <v-btn class="primary" :disabled="!selectedQuery.text" @click="submitForm">Search</v-btn>
         </v-form>
       </v-flex>
     </v-layout>

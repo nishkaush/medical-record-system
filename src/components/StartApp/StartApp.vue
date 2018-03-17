@@ -2,8 +2,8 @@
 <v-container class="mt-3">
   <v-layout>
     <v-flex xs12 class="text-xs-center">
-      <h1>Our Patients</h1>
-      <v-tabs fixed-tabs class="mt-3">
+      <!-- <h1>Our Patients</h1> -->
+      <v-tabs fixed-tabs class="mt-2">
         <v-tab href="#searchPatients">Search Patients</v-tab>
         <v-tab href="#addNewPatient">Add New Patient</v-tab>
         <v-tab-item id="searchPatients">
