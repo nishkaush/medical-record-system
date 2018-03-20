@@ -1,8 +1,8 @@
 <template>
   <v-card flat>
+
     <v-layout justify-center>
       <v-flex xs12 md5 class="px-4 pt-3 pb-0">
-
         <v-form ref="searchPatientForm">
           <v-select :items="queryType" label="Search By" v-model="selectedQuery"></v-select>
           <v-text-field 
@@ -17,10 +17,11 @@
           >
           </v-text-field>
         </v-form>
-
       </v-flex>
     </v-layout>
-    <v-btn class="mt-0 primary" @click="submitSearch" v-show="selectedQuery">Search</v-btn>
+
+    <v-btn class="mt-0 primary" @click="submitSearch" :disabled="!selectedQuery">Search</v-btn>
+
     <v-layout class="mt-3" v-if="showSearchResults===true">
       <v-flex xs12>
         <v-data-table
@@ -33,6 +34,14 @@
             <td>{{ props.item.patient_id }}</td>
             <td class="text-xs-center">{{ props.item.fullName }}</td>
             <td class="text-xs-center">{{ props.item.phone }}</td>
+            <td class="justify-center">
+            <v-btn icon class="mx-0">
+              <v-icon color="teal">edit</v-icon>
+            </v-btn>
+            <v-btn icon class="mx-0" @click="deletePatient(props.item.patient_id)">
+              <v-icon color="red">delete</v-icon>
+            </v-btn>
+          </td>
           </template>
           <template slot="no-data">
               {{noSearchResultsMessage}}
@@ -49,6 +58,7 @@ import axios from "axios";
 export default {
   data() {
     return {
+      fakeActionProp: "",
       firstName: "",
       lastName: "",
       fullName: "",
@@ -61,7 +71,8 @@ export default {
       headers: [
         { text: "Patient ID", value: "patient_id", align: "center" },
         { text: "Full Name", value: "fullName", align: "center" },
-        { text: "Phone", value: "phone", align: "center" }
+        { text: "Phone", value: "phone", align: "center" },
+        { text: "Actions", value: "fakeActionProp", align: "center" }
       ],
       rules: {
         required: v => !!v || `This field is required`
@@ -97,6 +108,22 @@ export default {
     };
   },
   methods: {
+    deletePatient(id) {
+      let vm = this;
+      axios
+        .get(`http://localhost:3000/patient/deletePatient/${id}`)
+        .then(res => {
+          if (res.data.affectedRows) {
+            vm.searchResults = vm.searchResults.filter(
+              e => e.patient_id !== id
+            );
+            if (vm.searchResults.length === 0) {
+              vm.noSearchResultsMessage = "No results left";
+            }
+          }
+        })
+        .catch(err => console.log(err));
+    },
     submitSearch() {
       if (this.$refs.searchPatientForm.validate()) {
         let vm = this;
@@ -109,9 +136,8 @@ export default {
             }&value=${selectedValue}`
           )
           .then(res => {
-            console.log(res.data);
             if (res.data.length === 0) {
-              vm.noSearchResultsMessage = "No Search Results";
+              vm.noSearchResultsMessage = "No Results Found";
             }
             vm.searchResults = res.data;
             vm.showSearchResults = true;
